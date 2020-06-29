@@ -4,7 +4,6 @@ using Dup_File_Finder.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -40,7 +39,6 @@ namespace Dup_File_Finder.forms {
          long size = -1;
          string hash = "";
          TreeNode node = null;
-         TreeNode subNode = null;
 
          if (dtDups != null && dtDups.Rows.Count > 0) {
             foreach (DataRow drDup in dtDups.Rows) {
@@ -52,7 +50,7 @@ namespace Dup_File_Finder.forms {
                   node.Tag = drDup;
                }
                else {
-                  subNode= node.Nodes.Add(drDup["id"].ToString(), drDup["filePath"].ToString());
+                  TreeNode subNode = node.Nodes.Add(drDup["id"].ToString(), drDup["filePath"].ToString());
                   subNode.Tag = drDup;
                }
             }
@@ -118,8 +116,6 @@ namespace Dup_File_Finder.forms {
 
          if (nodes.Length > 0) {
             TreeNode node = nodes[0];
-            TreeNode parent = null;
-
             if (File.Exists(e.FilePath)) {
                ((FileViewer)sender).ClearImage();
 
@@ -132,7 +128,6 @@ namespace Dup_File_Finder.forms {
 
             if (node.Parent == null) {
                if (node.Nodes.Count > 1) {
-                  
 
                }
                else {
@@ -142,7 +137,7 @@ namespace Dup_File_Finder.forms {
                }
             }
             else {
-               parent = node.Parent;
+               TreeNode parent = node.Parent;
 
                if (parent.Nodes.Count > 1) {
                   node.Remove();
@@ -158,9 +153,8 @@ namespace Dup_File_Finder.forms {
 
       private void DeleteButton_Click(object sender, EventArgs e) {
          Button btn = (Button)sender;
-         int id;
 
-         if (btn.Tag != null && Int32.TryParse(btn.Tag.ToString(), out id )) {
+         if (btn.Tag != null && Int32.TryParse(btn.Tag.ToString(), out _)) {
             TreeNode[] nodes = tvwDuplicates.Nodes.Find(btn.Tag.ToString(), true);
 
             if (nodes.Length > 0) {
@@ -181,7 +175,7 @@ namespace Dup_File_Finder.forms {
                      }
 
                      if (node.Parent == null) {
-                        if (node.GetNodeCount(false)==0) {
+                        if (node.GetNodeCount(false) == 0) {
                            node.Remove();
                         }
                         else {
@@ -207,7 +201,7 @@ namespace Dup_File_Finder.forms {
                      }
 
                   }
-                  catch(Exception ex) {
+                  catch (Exception ex) {
                      MessageBox.Show(this, "Error deleting file " + node.Text + "\r\n\r\n" + ex.Message, "Error Deleting File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                   }
 
@@ -273,57 +267,6 @@ System.Windows.Forms.Timer resizeTimer = null;
             fv.SizeContent();
 
             top += fv.Height + 10;
-         }
-
-      }
-
-      private void DoResizev1() { 
-         int piWidth = pnlImages.Width - 17;
-
-         Control[] imagePanels = pnlImages.Controls.Find("pnlFile", false);
-
-         Control[] find;
-
-         int top = -pnlImages.VerticalScroll.Value;
-
-         top += 10;
-
-         foreach (Control ipc in imagePanels) {
-            int cy = 3;
-
-            Label fileLabel = (Label)(ipc.Controls.Find("lblFileName", false)[0]);
-            find = ipc.Controls.Find("pbImage", false);
-            PictureBox pictureBox = find.Length == 0 ? null : (PictureBox)find[0] ;
-            Button deleteButton = (Button)(ipc.Controls.Find("btnDelete", false)[0]);
-
-            fileLabel.Top = cy;//.Location = new Point(0, cy);
-            fileLabel.Left = 3;
-            fileLabel.Width = piWidth;
-
-            /*string t = fileLabel.Text.Split(new char[] { '|' })[0].Trim();
-            t += string.Format(" | {0} {1}", piWidth, fileLabel.Width);
-            fileLabel.Text = t;*/
-
-            cy += 25;
-
-            if (pictureBox != null && pictureBox.Visible) {
-               pictureBox.Width = piWidth - 6;
-               pictureBox.Height = (int)(((decimal)pictureBox.Width / pictureBox.PreferredSize.Width) * pictureBox.PreferredSize.Height);
-               pictureBox.Top = cy;//.Location = new Point(0, cy);
-
-               cy += pictureBox.Height + 25;
-            }
-
-            deleteButton.Top = cy;//.Location = new Point(0, cy);
-            deleteButton.Left = piWidth - 25 - deleteButton.Width;
-
-            cy += deleteButton.Height + 10;
-
-            ipc.Top = top;//.Location = new Point(0, top);
-            ipc.Height = cy;
-            ipc.Width = piWidth;
-
-            top += ipc.Height + 10;
          }
 
       }

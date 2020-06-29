@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Dup_File_Finder.Forms {
    public partial class frmScan : Form {
       private Thread scanThread = null;
-      private ScanCompleteEventHandler onScanComplete = null;
+      private readonly ScanCompleteEventHandler onScanComplete = null;
 
       public frmScan() {
          InitializeComponent();
