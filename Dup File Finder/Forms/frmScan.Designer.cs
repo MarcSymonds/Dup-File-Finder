@@ -130,7 +130,7 @@
          // 
          this.btnCancelScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
          this.btnCancelScan.Enabled = false;
-         this.btnCancelScan.Location = new System.Drawing.Point(775, 399);
+         this.btnCancelScan.Location = new System.Drawing.Point(785, 398);
          this.btnCancelScan.Name = "btnCancelScan";
          this.btnCancelScan.Size = new System.Drawing.Size(86, 23);
          this.btnCancelScan.TabIndex = 4;
