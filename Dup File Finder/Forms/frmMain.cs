@@ -90,6 +90,8 @@ namespace Dup_File_Finder.forms {
                   fv.DeleteFile += Fv_DeleteFile;
 
                   pnlImages.Controls.Add(fv);
+
+                  ++ipIdx;
                }
                else {
                   fv = (FileViewer)fileViewers[ipIdx++];
@@ -99,16 +101,14 @@ namespace Dup_File_Finder.forms {
                fv.Visible = true;
             }
 
-
             DoResize();
          }
-         else {
+
             while (ipIdx < fileViewers.Length) {
                fv = (FileViewer)fileViewers[ipIdx++];
                fv.ClearImage();
                fv.Visible = false;
             }
-         }
       }
 
       private void Fv_DeleteFile(object sender, FileViewerEventArgs e) {
